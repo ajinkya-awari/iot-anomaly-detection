@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Data and model files (too large for git)
+data/*.csv
+models/*.pt
+models/*.pkl
+models/*.npy
+models/*.json
+
+# Outputs — keep PNGs for README, skip large HTML and CSV-heavy files
+outputs/dashboard.html
+
+# Jupyter — track notebooks but ignore checkpoint dirs
+.ipynb_checkpoints/
+
+# Logs
+*.log

@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+type: software
+title: "IoT Sensor Anomaly Detection via Deep Autoencoder Ensembles"
+abstract: >
+  Unsupervised anomaly detection for multivariate industrial IoT sensor streams
+  using LSTM autoencoders, Transformer autoencoders, and Isolation Forest.
+  Includes a real-time monitoring dashboard and interactive Streamlit simulation.
+authors:
+  - family-names: "Awari"
+    given-names: "Ajinkya"
+    email: "ajinkya18072001@gmail.com"
+    orcid: ""
+repository-code: "https://github.com/ajinkya-awari/iot-anomaly-detection"
+url: "https://github.com/ajinkya-awari/iot-anomaly-detection"
+license: MIT
+version: "1.0.0"
+date-released: "2024-01-01"
+keywords:
+  - anomaly detection
+  - time series
+  - IoT
+  - LSTM
+  - transformer
+  - autoencoder
+  - isolation forest
+  - industrial monitoring
+  - SCADA
+  - PyTorch

@@ -1,0 +1,125 @@
+# IoT Anomaly Detection — Centralized Configuration
+# ====================================================
+# All hyperparameters and paths live here so you don't have to hunt
+# through multiple scripts when tuning. Scripts import these via utils.py.
+# Anything you'd want to sweep in an experiment should be in this file.
+
+# ── Data Generation ───────────────────────────────────────────────────
+data:
+  seed: 42
+  num_days: 60              # two months — enough to capture weekly patterns
+  sample_rate_min: 5        # one reading every 5 minutes
+  anomaly_ratio: 0.05       # ~5% anomalous in test set; realistic for industrial
+  train_ratio: 0.70         # normal-only training split
+
+  # sensor baseline parameters (tuned to match typical SCADA ranges)
+  sensors:
+    temperature_C:
+      base: 72.0
+      noise_std: 1.5
+      diurnal_amp: 4.0
+      drift_rate: 0.002
+      weekend_factor: 0.6   # lower activity on Sat/Sun
+    pressure_kPa:
+      base: 101.3
+      noise_std: 0.8
+      diurnal_amp: 0.5
+      drift_rate: -0.001
+      weekend_factor: 0.8
+    vibration_mm_s:
+      base: 2.5
+      noise_std: 0.3
+      diurnal_amp: 0.2
+      drift_rate: 0.0005
+      weekend_factor: 0.4   # machines mostly idle on weekends
+    current_draw_A:
+      base: 15.0
+      noise_std: 0.5
+      diurnal_amp: 3.0
+      drift_rate: 0.001
+      weekend_factor: 0.5
+
+
+# ── Shared Model Settings ─────────────────────────────────────────────
+model:
+  sequence_length: 30       # ~2.5 hours at 5-min intervals
+  input_dim: 4              # number of sensor channels
+  latent_dim: 32            # bottleneck size for both AE variants
+  threshold_percentile: 95  # anomaly threshold: Pct-th of training errors
+
+
+# ── LSTM Autoencoder ──────────────────────────────────────────────────
+lstm:
+  hidden_dim: 64
+  num_layers: 2
+  dropout: 0.20
+  # training
+  batch_size: 64
+  learning_rate: 0.001
+  num_epochs: 50
+  weight_decay: 0.00001
+  grad_clip_norm: 1.0
+  # scheduler
+  scheduler: plateau         # "plateau" or "cosine"
+  plateau_factor: 0.5
+  plateau_patience: 5
+
+
+# ── Transformer Autoencoder ───────────────────────────────────────────
+transformer:
+  d_model: 64
+  n_heads: 4                # 8 heads feels like overkill for this sequence length
+  num_encoder_layers: 2
+  num_decoder_layers: 2
+  dim_feedforward: 128
+  dropout: 0.10
+  activation: gelu          # gelu slightly outperforms relu empirically here
+  # training
+  batch_size: 64
+  learning_rate: 0.0005     # transformers need lower LR than LSTM
+  num_epochs: 60            # takes a bit longer to converge
+  weight_decay: 0.0001
+  grad_clip_norm: 1.0
+  # scheduler
+  scheduler: cosine_warmup
+  warmup_epochs: 5          # linear warmup is important for transformer stability
+
+
+# ── Isolation Forest ─────────────────────────────────────────────────
+isolation_forest:
+  n_estimators: 200         # more trees = more stable; diminishing returns past ~250
+  contamination: 0.07       # bumped slightly above actual ratio (0.05) — IF tends conservative
+  max_features: 1.0
+  random_state: 42
+  # feature engineering windows (in samples, at 5-min intervals)
+  rolling_short_window: 12  # ~1 hour
+  rolling_long_window: 24   # ~2 hours for z-score baseline
+
+
+# ── Ensemble ─────────────────────────────────────────────────────────
+ensemble:
+  # majority vote weights (must sum to 1 if using weighted vote)
+  lstm_weight: 1
+  transformer_weight: 1
+  iforest_weight: 1
+  # minimum votes needed to flag as anomaly (out of 3)
+  vote_threshold: 2         # any-2-of-3 agreement
+
+
+# ── Paths ─────────────────────────────────────────────────────────────
+paths:
+  data_dir: data
+  model_dir: models
+  output_dir: outputs
+
+
+# ── Dashboard ─────────────────────────────────────────────────────────
+dashboard:
+  max_display_points: 2000  # downsample for HTML file size
+
+
+# ── Streamlit App ─────────────────────────────────────────────────────
+streamlit:
+  default_speed: 10         # samples per second
+  default_window: 200       # display window size
+  anomaly_injection_prob: 0.02

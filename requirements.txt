@@ -1,0 +1,37 @@
+# IoT Anomaly Detection — Dependencies
+# ======================================
+#
+# IMPORTANT: Install PyTorch FIRST before running pip install -r requirements.txt
+# PyTorch has its own index URL so it won't install correctly via a plain pip install.
+#
+# Step 1 — Install PyTorch (pick the right variant for your machine):
+#
+#   CPU only (works on any machine, no GPU needed):
+#     pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+#
+#   CUDA 11.8 (NVIDIA GPU):
+#     pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+#
+#   CUDA 12.1:
+#     pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+#
+# Step 2 — Then install everything else:
+#     pip install -r requirements.txt
+
+# ── Core data / ML ────────────────────────────────────────────────────
+numpy>=1.24.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+
+# ── Visualization ─────────────────────────────────────────────────────
+matplotlib>=3.7.0
+plotly>=5.15.0
+
+# ── Utilities ─────────────────────────────────────────────────────────
+joblib>=1.3.0        # for saving Isolation Forest model
+
+# ── Configuration ─────────────────────────────────────────────────────
+PyYAML>=6.0          # for reading configs/config.yaml
+
+# ── Interactive Dashboard ─────────────────────────────────────────────
+streamlit>=1.28.0
