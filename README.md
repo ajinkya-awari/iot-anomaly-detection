@@ -398,7 +398,6 @@ Opens at `http://localhost:8501`. Features:
 - **Zerveas et al. (2021)** — *A Transformer-based Framework for Multivariate Time Series Representation Learning.* KDD 2021. Informed the Transformer architecture design.
 - **Tuli et al. (2022)** — *TranAD: Deep Transformer Networks for Anomaly Detection in Multivariate Time Series Data.* VLDB 2022. Our model is a simplified, non-adversarial variant.
 - **Vaswani et al. (2017)** — *Attention Is All You Need.* NeurIPS 2017. Foundational architecture reference for the positional encoding and attention mechanism.
-- **Awari, A. et al. (2023)** — *Plant Disease Detection Using Machine Learning.* IJARSCT Vol. 3 (Issue 2 & 4). Prior published work by the author applying ML to real-world detection tasks, motivating this extension to industrial monitoring.
 
 ---
 
