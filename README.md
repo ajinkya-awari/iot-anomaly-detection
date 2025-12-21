@@ -1,4 +1,4 @@
-# IoT Sensor Anomaly Detection via Deep Autoencoder Ensembles
+# IoT Sensor Anomaly Detection: LSTM, Transformer and Isolation Forest Comparison
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/)
@@ -406,25 +406,11 @@ Opens at `http://localhost:8501`. Features:
 ```bibtex
 @software{awari2024iotanomaly,
   author       = {Awari, Ajinkya},
-  title        = {{IoT Sensor Anomaly Detection via Deep Autoencoder Ensembles}},
-  year         = {2024},
+  title        = {{IoT Sensor Anomaly Detection: LSTM, Transformer and Isolation Forest Comparison}},
+  year         = {2026},
   url          = {https://github.com/ajinkya-awari/iot-anomaly-detection},
   version      = {1.0.0},
   license      = {MIT}
-}
-```
-
-Related published work by the author:
-
-```bibtex
-@article{awari2023plant,
-  author  = {Awari, Ajinkya},
-  title   = {Plant Disease Detection Using Machine Learning},
-  journal = {International Journal of Advanced Research in Science, Communication and Technology},
-  volume  = {3},
-  number  = {2},
-  year    = {2023},
-  issn    = {2581-9429}
 }
 ```
 
