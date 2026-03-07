@@ -7,7 +7,7 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28%2B-ff4b4b?logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1UKXJ-953nF2olsdOWBruRIRM0dnBqfwa?usp=sharing)
 
-> Unsupervised anomaly detection for multivariate industrial IoT sensor streams using LSTM autoencoders, Transformer autoencoders, and Isolation Forest — with a real-time monitoring dashboard and interactive simulation.
+> Unsupervised anomaly detection for multivariate industrial IoT sensor streams using LSTM autoencoders, Transformer autoencoders, and Isolation Forest  with a real-time monitoring dashboard and interactive simulation.
 
 ![Sensor Data Overview](outputs/data_overview.png)
 
@@ -15,7 +15,7 @@
 
 ## Abstract
 
-Industrial control systems generate continuous multivariate time-series from sensors monitoring temperature, pressure, vibration, and electrical current. Rare fault conditions — bearing degradation, calibration drift, electrical surges, mechanical resonance — must be reliably detected against a backdrop of normal operational variance, diurnal load cycles, and weekend activity modulation. This project benchmarks three unsupervised anomaly detection paradigms on a physically motivated synthetic SCADA dataset: a **seq2seq LSTM autoencoder** that captures short-range temporal dependencies via recurrence, a **Transformer autoencoder** that models long-range patterns through multi-head self-attention, and **Isolation Forest** augmented with hand-crafted rolling-window features as a classical ML baseline. The Isolation Forest achieves the best overall F1 of **0.3453** (recall 0.884), the LSTM Autoencoder achieves the highest recall at **0.9648**, and the Transformer provides the most interpretable representations via attention weight visualization. All models, training pipelines, and evaluation code are fully reproducible.
+Industrial control systems generate continuous multivariate time-series from sensors monitoring temperature, pressure, vibration, and electrical current. Rare fault conditions  bearing degradation, calibration drift, electrical surges, mechanical resonance  must be reliably detected against a backdrop of normal operational variance, diurnal load cycles, and weekend activity modulation. This project benchmarks three unsupervised anomaly detection paradigms on a physically motivated synthetic SCADA dataset: a **seq2seq LSTM autoencoder** that captures short-range temporal dependencies via recurrence, a **Transformer autoencoder** that models long-range patterns through multi-head self-attention, and **Isolation Forest** augmented with hand-crafted rolling-window features as a classical ML baseline. The Isolation Forest achieves the best overall F1 of **0.3453** (recall 0.884), the LSTM Autoencoder achieves the highest recall at **0.9648**, and the Transformer provides the most interpretable representations via attention weight visualization. All models, training pipelines, and evaluation code are fully reproducible.
 
 ---
 
@@ -47,7 +47,7 @@ over sliding windows $\mathbf{W}_t = [\mathbf{x}_{t-L+1}, \ldots, \mathbf{x}_t] 
 
 $$s_t = \frac{1}{L \cdot d} \sum_{i=1}^{L} \bigl\| \mathbf{W}_t[i] - \hat{\mathbf{W}}_t[i] \bigr\|_2^2$$
 
-A sample is flagged anomalous when $s_t > \tau$, where $\tau$ is the **95th percentile** of training-set reconstruction errors — a threshold calibration approach introduced by Malhotra et al. (2016).
+A sample is flagged anomalous when $s_t > \tau$, where $\tau$ is the **95th percentile** of training-set reconstruction errors  a threshold calibration approach introduced by Malhotra et al. (2016).
 
 **Isolation Forest.** The classical baseline assigns anomaly scores via the expected path length $h(\mathbf{x})$ to isolate a point across an ensemble of random partition trees (Liu et al., 2008):
 
@@ -107,7 +107,7 @@ Output [B, 30, 4]     MSE(input, output) = anomaly score
 
 ### Transformer Autoencoder
 
-Self-attention allows the model to directly relate any two time steps, regardless of distance. This is particularly effective for detecting gradual drift anomalies that span many samples — a scenario where LSTM's recurrent information propagation can dilute the signal.
+Self-attention allows the model to directly relate any two time steps, regardless of distance. This is particularly effective for detecting gradual drift anomalies that span many samples  a scenario where LSTM's recurrent information propagation can dilute the signal.
 
 ```
 Input  [B, 30, 4]
@@ -170,13 +170,13 @@ The classical baseline is given temporal awareness through engineered rolling-wi
 
 ### Key Observations
 
-**LSTM Autoencoder** achieves the highest recall (96.5%) at the cost of very high false positive rate — it flags almost anything deviating from its tight training distribution. This is the right operating point in scenarios where missing an anomaly carries catastrophic cost (e.g., transformer overheating). The confusion matrix confirms: 878 true positives but 4,160 false positives.
+**LSTM Autoencoder** achieves the highest recall (96.5%) at the cost of very high false positive rate  it flags almost anything deviating from its tight training distribution. This is the right operating point in scenarios where missing an anomaly carries catastrophic cost (e.g., transformer overheating). The confusion matrix confirms: 878 true positives but 4,160 false positives.
 
 **Transformer Autoencoder** offers a better precision-recall balance (F1 0.3038). Its attention mechanism better distinguishes transient normal fluctuations from genuine anomalies, reducing false positives by ~20% relative to LSTM while maintaining high recall.
 
-**Isolation Forest** wins on F1 despite lacking native temporal modeling — the 16 engineered rolling features carry substantial discriminative signal. This result underscores that feature engineering remains valuable even in the deep learning era. The model is also 50× faster to train (seconds vs. minutes) and fully interpretable.
+**Isolation Forest** wins on F1 despite lacking native temporal modeling  the 16 engineered rolling features carry substantial discriminative signal. This result underscores that feature engineering remains valuable even in the deep learning era. The model is also 50× faster to train (seconds vs. minutes) and fully interpretable.
 
-**On the low precision challenge:** All models exhibit precision < 0.22. This is structurally difficult: with ~5% anomaly prevalence and 5 diverse fault types, any reconstruction-based approach learns a compact normal manifold but the normal-to-anomaly boundary is diffuse. Addressing this would require semi-supervised training with a small set of labeled anomalies, or a separate precision-calibration step — left as future work.
+**On the low precision challenge:** All models exhibit precision < 0.22. This is structurally difficult: with ~5% anomaly prevalence and 5 diverse fault types, any reconstruction-based approach learns a compact normal manifold but the normal-to-anomaly boundary is diffuse. Addressing this would require semi-supervised training with a small set of labeled anomalies, or a separate precision-calibration step  left as future work.
 
 ### ROC and Precision-Recall Curves
 
@@ -202,7 +202,7 @@ The classical baseline is given temporal awareness through engineered rolling-wi
 
 ![Isolation Forest Scores](outputs/iforest_scores.png)
 
-*Score distributions for normal (green) and anomalous (red) samples. Significant class overlap reflects the inherent difficulty of the problem — many anomalous samples fall within the normal score range, particularly short-duration spikes that are "absorbed" by the rolling feature windows.*
+*Score distributions for normal (green) and anomalous (red) samples. Significant class overlap reflects the inherent difficulty of the problem  many anomalous samples fall within the normal score range, particularly short-duration spikes that are "absorbed" by the rolling feature windows.*
 
 ### Transformer Self-Attention Weights
 
@@ -218,7 +218,7 @@ The classical baseline is given temporal awareness through engineered rolling-wi
 
 ![Transformer Training Loss](outputs/transformer_training_loss.png)
 
-*Transformer autoencoder loss with linear warmup (5 epochs) followed by cosine decay. Slower initial convergence is expected — attention heads require more epochs to specialise.*
+*Transformer autoencoder loss with linear warmup (5 epochs) followed by cosine decay. Slower initial convergence is expected  attention heads require more epochs to specialise.*
 
 ### Reconstruction Error Distributions
 
@@ -295,9 +295,9 @@ iot-anomaly-detection/
 - Python 3.10 or higher
 - Windows 10/11 (or Linux/macOS)
 - ~1 GB disk space for models and outputs
-- GPU optional — CPU training completes in ~5–8 minutes
+- GPU optional - CPU training completes in ~5–8 minutes
 
-### Quick Start — Run in Google Colab (no setup required)
+### Quick Start - Run in Google Colab (no setup required)
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1UKXJ-953nF2olsdOWBruRIRM0dnBqfwa?usp=sharing)
 
@@ -305,7 +305,7 @@ Open the notebook, select **Runtime → Change runtime type → T4 GPU**, then r
 
 ---
 
-### Installation (Windows — Command Prompt)
+### Installation (Windows - Command Prompt)
 
 **Step 1: Clone the repository**
 ```cmd
@@ -393,11 +393,11 @@ Opens at `http://localhost:8501`. Features:
 
 ## Related Work
 
-- **Malhotra et al. (2016)** — *LSTM-Based Encoder-Decoder for Multi-Sensor Anomaly Detection.* The 95th-percentile threshold calibration used by both autoencoder variants originates from this work.
-- **Liu et al. (2008)** — *Isolation Forest.* KDD 2008. The classical baseline.
-- **Zerveas et al. (2021)** — *A Transformer-based Framework for Multivariate Time Series Representation Learning.* KDD 2021. Informed the Transformer architecture design.
-- **Tuli et al. (2022)** — *TranAD: Deep Transformer Networks for Anomaly Detection in Multivariate Time Series Data.* VLDB 2022. Our model is a simplified, non-adversarial variant.
-- **Vaswani et al. (2017)** — *Attention Is All You Need.* NeurIPS 2017. Foundational architecture reference for the positional encoding and attention mechanism.
+- **Malhotra et al. (2016)**  *LSTM-Based Encoder-Decoder for Multi-Sensor Anomaly Detection.* The 95th-percentile threshold calibration used by both autoencoder variants originates from this work.
+- **Liu et al. (2008)**  *Isolation Forest.* KDD 2008. The classical baseline.
+- **Zerveas et al. (2021)**  *A Transformer-based Framework for Multivariate Time Series Representation Learning.* KDD 2021. Informed the Transformer architecture design.
+- **Tuli et al. (2022)**  *TranAD: Deep Transformer Networks for Anomaly Detection in Multivariate Time Series Data.* VLDB 2022. Our model is a simplified, non-adversarial variant.
+- **Vaswani et al. (2017)**  *Attention Is All You Need.* NeurIPS 2017. Foundational architecture reference for the positional encoding and attention mechanism.
 
 ---
 
@@ -418,4 +418,4 @@ Opens at `http://localhost:8501`. Features:
 
 ## License
 
-MIT © 2024 Ajinkya Awari — see [LICENSE](LICENSE) for full terms.
+MIT © 2024 Ajinkya Awari - see [LICENSE](LICENSE) for full terms.
